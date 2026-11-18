@@ -1,0 +1,48 @@
+{
+  "team_id": "TeamXX",
+  "stage": 3,
+  "detector": "YOLOv8s",
+  "backbone": "CSPDarknet (YOLOv8s)",
+  "pretrained_source": "Ultralytics YOLOv8s COCO-pretrained weights (yolov8s.pt)",
+  "input_size": [
+    640,
+    640
+  ],
+  "class_order": [
+    "crazing",
+    "inclusion",
+    "patches",
+    "pitted_surface",
+    "rolled_in_scale",
+    "scratches"
+  ],
+  "confidence_threshold": 0.001,
+  "nms_iou_threshold": 0.6,
+  "bbox_format": "xyxy_pixel",
+  "max_detections_per_image": 100,
+  "seed": 42,
+  "checkpoint_file": "stage3_model.pt",
+  "training": {
+    "epochs": 100,
+    "batch": 8,
+    "lr0": 0.01,
+    "lrf": 0.01,
+    "optimizer": "auto",
+    "patience": 50,
+    "imgsz": 640
+  },
+  "augmentation": {
+    "degrees": 10.0,
+    "translate": 0.1,
+    "scale": 0.5,
+    "fliplr": 0.5,
+    "flipud": 0.5,
+    "mosaic": 1.0,
+    "close_mosaic": 20,
+    "mixup": 0.0,
+    "hsv_h": 0.0,
+    "hsv_s": 0.0,
+    "hsv_v": 0.4
+  },
+  "validation_map50": 0.7419211054363365
+}

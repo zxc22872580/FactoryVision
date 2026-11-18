@@ -1,0 +1,64 @@
+{
+  "team_id": "TeamXX",
+  "stage": 1,
+  "model_name": "BaselineCNN(from scratch) + Data Augmentation + Batch Normalization",
+  "input_size": [
+    128,
+    128
+  ],
+  "class_order": [
+    "crazing",
+    "inclusion",
+    "patches",
+    "pitted_surface",
+    "rolled_in_scale",
+    "scratches"
+  ],
+  "normalization_mean": [
+    0.507
+  ],
+  "normalization_std": [
+    0.2132
+  ],
+  "seed": 42,
+  "improvement_methods": [
+    "Data Augmentation",
+    "Batch Normalization"
+  ],
+  "checkpoint_file": "stage1_model.pth",
+  "pretrained_source": null,
+  "improvement_details": {
+    "Data Augmentation": {
+      "random_horizontal_flip_p": 0.5,
+      "random_vertical_flip_p": 0.5,
+      "random_rotation_degrees": 15,
+      "random_resized_crop_scale": [
+        0.75,
+        1.0
+      ],
+      "random_resized_crop_ratio": [
+        0.9,
+        1.111
+      ]
+    },
+    "Batch Normalization": {
+      "where": "after every Conv2d, before ReLU",
+      "num_layers": 7,
+      "momentum": 0.1,
+      "eps": 1e-05
+    }
+  },
+  "training": {
+    "lr": 0.001,
+    "batch_size": 64,
+    "epochs": 45,
+    "weight_decay": 0.0,
+    "dropout": 0.0,
+    "merge_train_val": true
+  },
+  "model_selection": {
+    "selected_experiment": "E4_aug_bn",
+    "selection_run_validation_macro_f1": 1.0,
+    "note": "The submitted checkpoint was retrained on train+val after model selection, so the validation split is part of its training data and its validation score is no longer an independent estimate."
+  }
+}

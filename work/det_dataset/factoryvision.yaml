@@ -1,0 +1,11 @@
+path: C:/Users/zxc22/OneDrive/桌面/claude file/FactoryVision/work/det_dataset
+train: images/train
+val: images/val
+
+names:
+  0: crazing
+  1: inclusion
+  2: patches
+  3: pitted_surface
+  4: rolled_in_scale
+  5: scratches

@@ -1,0 +1,167 @@
+{
+  "train": {
+    "objects_per_image_mean": 2.320634920634921,
+    "objects_per_image_max": 9,
+    "images": 1260,
+    "per_class": {
+      "crazing": {
+        "n_boxes": 487,
+        "rel_area_mean": 0.2309441478439425,
+        "rel_area_median": 0.2107,
+        "rel_area_p10": 0.11595000000000001,
+        "aspect_median": 1.7875,
+        "small_box_ratio": 0.0
+      },
+      "inclusion": {
+        "n_boxes": 716,
+        "rel_area_mean": 0.07040810055865922,
+        "rel_area_median": 0.041325,
+        "rel_area_p10": 0.01235,
+        "aspect_median": 0.3666002986560478,
+        "small_box_ratio": 0.3924581005586592
+      },
+      "patches": {
+        "n_boxes": 598,
+        "rel_area_mean": 0.12771505016722406,
+        "rel_area_median": 0.09295,
+        "rel_area_p10": 0.031245000000000002,
+        "aspect_median": 0.7301962533452275,
+        "small_box_ratio": 0.0903010033444816
+      },
+      "pitted_surface": {
+        "n_boxes": 299,
+        "rel_area_mean": 0.5699235785953177,
+        "rel_area_median": 0.562175,
+        "rel_area_p10": 0.20837,
+        "aspect_median": 0.7653061224489796,
+        "small_box_ratio": 0.010033444816053512
+      },
+      "rolled_in_scale": {
+        "n_boxes": 435,
+        "rel_area_mean": 0.14558281609195403,
+        "rel_area_median": 0.1188,
+        "rel_area_p10": 0.04431,
+        "aspect_median": 1.0136986301369864,
+        "small_box_ratio": 0.04597701149425287
+      },
+      "scratches": {
+        "n_boxes": 389,
+        "rel_area_mean": 0.09167255784061698,
+        "rel_area_median": 0.073875,
+        "rel_area_p10": 0.028770000000000007,
+        "aspect_median": 0.18571428571428572,
+        "small_box_ratio": 0.11053984575835475
+      }
+    }
+  },
+  "val": {
+    "objects_per_image_mean": 2.3740740740740742,
+    "objects_per_image_max": 9,
+    "images": 270,
+    "per_class": {
+      "crazing": {
+        "n_boxes": 102,
+        "rel_area_mean": 0.22582230392156857,
+        "rel_area_median": 0.2094125,
+        "rel_area_p10": 0.13029000000000002,
+        "aspect_median": 1.9016042780748663,
+        "small_box_ratio": 0.0
+      },
+      "inclusion": {
+        "n_boxes": 149,
+        "rel_area_mean": 0.05900469798657718,
+        "rel_area_median": 0.03465,
+        "rel_area_p10": 0.012890000000000002,
+        "aspect_median": 0.38235294117647056,
+        "small_box_ratio": 0.4563758389261745
+      },
+      "patches": {
+        "n_boxes": 152,
+        "rel_area_mean": 0.12950904605263158,
+        "rel_area_median": 0.1055625,
+        "rel_area_p10": 0.03155,
+        "aspect_median": 0.7070214544441349,
+        "small_box_ratio": 0.09868421052631579
+      },
+      "pitted_surface": {
+        "n_boxes": 66,
+        "rel_area_mean": 0.577653409090909,
+        "rel_area_median": 0.4980625,
+        "rel_area_p10": 0.2289875,
+        "aspect_median": 0.6534524287434764,
+        "small_box_ratio": 0.0
+      },
+      "rolled_in_scale": {
+        "n_boxes": 93,
+        "rel_area_mean": 0.15628870967741937,
+        "rel_area_median": 0.13325,
+        "rel_area_p10": 0.05667,
+        "aspect_median": 0.9230769230769231,
+        "small_box_ratio": 0.010752688172043012
+      },
+      "scratches": {
+        "n_boxes": 79,
+        "rel_area_mean": 0.09007911392405063,
+        "rel_area_median": 0.078625,
+        "rel_area_p10": 0.031740000000000004,
+        "aspect_median": 0.14646464646464646,
+        "small_box_ratio": 0.0759493670886076
+      }
+    }
+  },
+  "all": {
+    "objects_per_image_mean": 2.3300653594771243,
+    "objects_per_image_max": 9,
+    "images": 1530,
+    "per_class": {
+      "crazing": {
+        "n_boxes": 589,
+        "rel_area_mean": 0.23005717317487265,
+        "rel_area_median": 0.2106,
+        "rel_area_p10": 0.11931,
+        "aspect_median": 1.8028169014084507,
+        "small_box_ratio": 0.0
+      },
+      "inclusion": {
+        "n_boxes": 865,
+        "rel_area_mean": 0.06844381502890173,
+        "rel_area_median": 0.039425,
+        "rel_area_p10": 0.01235,
+        "aspect_median": 0.37209302325581395,
+        "small_box_ratio": 0.40346820809248557
+      },
+      "patches": {
+        "n_boxes": 750,
+        "rel_area_mean": 0.12807863333333333,
+        "rel_area_median": 0.09382499999999999,
+        "rel_area_p10": 0.031315,
+        "aspect_median": 0.7226495726495726,
+        "small_box_ratio": 0.092
+      },
+      "pitted_surface": {
+        "n_boxes": 365,
+        "rel_area_mean": 0.571321301369863,
+        "rel_area_median": 0.555,
+        "rel_area_p10": 0.20997000000000002,
+        "aspect_median": 0.7597765363128491,
+        "small_box_ratio": 0.00821917808219178
+      },
+      "rolled_in_scale": {
+        "n_boxes": 528,
+        "rel_area_mean": 0.14746851325757576,
+        "rel_area_median": 0.1222,
+        "rel_area_p10": 0.046235,
+        "aspect_median": 1.0,
+        "small_box_ratio": 0.03977272727272727
+      },
+      "scratches": {
+        "n_boxes": 468,
+        "rel_area_mean": 0.09140357905982907,
+        "rel_area_median": 0.074625,
+        "rel_area_p10": 0.029302500000000002,
+        "aspect_median": 0.17831978319783198,
+        "small_box_ratio": 0.1047008547008547
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "detector": "YOLOv8s",
+  "backbone": "CSPDarknet (YOLOv8s)",
+  "pretrained_source": "Ultralytics YOLOv8s COCO-pretrained weights (yolov8s.pt)",
+  "imgsz": 640,
+  "epochs": 100,
+  "batch": 8,
+  "patience": 50,
+  "lr0": 0.01,
+  "lrf": 0.01,
+  "optimizer": "auto",
+  "seed": 42,
+  "augmentation": {
+    "degrees": 10.0,
+    "translate": 0.1,
+    "scale": 0.5,
+    "fliplr": 0.5,
+    "flipud": 0.5,
+    "mosaic": 1.0,
+    "close_mosaic": 20,
+    "mixup": 0.0,
+    "hsv_h": 0.0,
+    "hsv_s": 0.0,
+    "hsv_v": 0.4
+  },
+  "params": 11166560,
+  "save_dir": "C:\\Users\\zxc22\\OneDrive\\\u684c\u9762\\claude file\\FactoryVision\\work\\stage3_runs\\yolov8s_640",
+  "best_weights": "C:\\Users\\zxc22\\OneDrive\\\u684c\u9762\\claude file\\FactoryVision\\work\\stage3_runs\\yolov8s_640\\weights\\best.pt"
+}

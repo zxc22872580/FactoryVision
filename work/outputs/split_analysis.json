@@ -1,0 +1,49 @@
+{
+  "n_train": 1260,
+  "n_val": 270,
+  "unique_train_hashes": 1260,
+  "exact_train_val_duplicates": [
+    [
+      "VAL_0101.png",
+      "TRN_0504.png"
+    ]
+  ],
+  "near_dup_corr_gt_0.95": 26,
+  "near_dup_corr_gt_0.90": 55,
+  "max_corr_mean": 0.7296540141105652,
+  "max_corr_median": 0.73349928855896,
+  "max_corr_p95": 0.9669880867004395,
+  "nearest_train_neighbour_same_class_ratio": 0.5037037037037037,
+  "per_class": {
+    "crazing": {
+      "max_corr_mean": 0.658141553401947,
+      "n_above_0.95": 0,
+      "n_above_0.90": 7
+    },
+    "inclusion": {
+      "max_corr_mean": 0.8418033123016357,
+      "n_above_0.95": 6,
+      "n_above_0.90": 19
+    },
+    "patches": {
+      "max_corr_mean": 0.6787155866622925,
+      "n_above_0.95": 1,
+      "n_above_0.90": 2
+    },
+    "pitted_surface": {
+      "max_corr_mean": 0.8620589375495911,
+      "n_above_0.95": 18,
+      "n_above_0.90": 24
+    },
+    "rolled_in_scale": {
+      "max_corr_mean": 0.6182519197463989,
+      "n_above_0.95": 0,
+      "n_above_0.90": 0
+    },
+    "scratches": {
+      "max_corr_mean": 0.7189525365829468,
+      "n_above_0.95": 1,
+      "n_above_0.90": 3
+    }
+  }
+}

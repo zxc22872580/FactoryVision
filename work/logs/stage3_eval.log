@@ -1,0 +1,36 @@
+training finished after ~136 minutes of waiting
+validation images: 270  gt images: 270
+  conf=0.001  max_det=100  nms=0.6  -> mAP 0.7419 (39.4 boxes/img)
+  conf=0.005  max_det=100  nms=0.6  -> mAP 0.7403 (16.3 boxes/img)
+  conf=0.01   max_det=100  nms=0.6  -> mAP 0.7383 (11.6 boxes/img)
+  conf=0.05   max_det=100  nms=0.6  -> mAP 0.7170 (5.3 boxes/img)
+  conf=0.001  max_det=100  nms=0.5  -> mAP 0.7410 (27.3 boxes/img)
+  conf=0.001  max_det=100  nms=0.7  -> mAP 0.7319 (55.8 boxes/img)
+  conf=0.001  max_det=30   nms=0.6  -> mAP 0.7418 (25.5 boxes/img)
+Ultralytics 8.4.215  Python-3.11.9 torch-2.6.0+cu124 CUDA:0 (NVIDIA GeForce GTX 1650 Ti, 4096MiB)
+Model summary (fused): 72 layers, 11,127,906 parameters, 0 gradients, 28.4 GFLOPs
+[34m[1mval: [0mFast image access  (ping: 0.1±0.0 ms, read: 214.8±73.4 MB/s, size: 39.5 KB)
+[K[34m[1mval: [0mScanning C:\Users\zxc22\OneDrive\桌面\claude file\FactoryVision\work\det_dataset\labels\val.cache... 270 images, 0 backgrounds, 0 corrupt: 100% ━━━━━━━━━━━━ 270/270  0.0s
+[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 5% ╸─────────── 1/17 96.3s/it 28.9s<25:40[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 11% ━─────────── 2/17 2.2s/it 29.6s<33.3s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 17% ━━────────── 3/17 1.3s/it 30.2s<18.6s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 23% ━━╸───────── 4/17 1.0s/it 30.9s<13.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 29% ━━━╸──────── 5/17 1.1it/s 31.6s<10.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 35% ━━━━──────── 6/17 1.2it/s 32.3s<9.0s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 41% ━━━━╸─────── 7/17 1.3it/s 33.0s<7.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 47% ━━━━━╸────── 8/17 1.4it/s 33.6s<6.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 52% ━━━━━━────── 9/17 1.4it/s 34.3s<5.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 58% ━━━━━━━───── 10/17 1.4it/s 35.0s<4.9s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 64% ━━━━━━━╸──── 11/17 1.4it/s 35.7s<4.2s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 70% ━━━━━━━━──── 12/17 1.4it/s 36.4s<3.5s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 76% ━━━━━━━━━─── 13/17 1.4it/s 37.0s<2.8s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 82% ━━━━━━━━━╸── 14/17 1.5it/s 37.7s<2.1s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 88% ━━━━━━━━━━╸─ 15/17 1.5it/s 38.4s<1.4s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 94% ━━━━━━━━━━━─ 16/17 1.5it/s 39.1s<0.7s[K                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 17/17 2.3s/it 39.5s
+                   all        270        641      0.707      0.736      0.759      0.424
+Speed: 1.3ms preprocess, 32.1ms inference, 0.0ms loss, 3.1ms postprocess per image
+ultralytics built-in  mAP@0.5 = 0.7588  (ours = 0.7419)
+
+mAP@0.5 = 0.7419
+  crazing          AP=0.4559  GT=102  P@0.25=0.551 R=0.373
+  inclusion        AP=0.7809  GT=149  P@0.25=0.612 R=0.752
+  patches          AP=0.9277  GT=152  P@0.25=0.873 R=0.908
+  pitted_surface   AP=0.8488  GT= 66  P@0.25=0.839 R=0.788
+  rolled_in_scale  AP=0.5807  GT= 93  P@0.25=0.515 R=0.548
+  scratches        AP=0.8575  GT= 79  P@0.25=0.724 R=0.899
+micro P/R @0.25: 0.6906 / 0.7207
+latency: 35.3 ms/img (single), batch wall 52.0 ms/img
+fig -> C:\Users\zxc22\OneDrive\桌面\claude file\FactoryVision\work\figures\stage3\per_class_ap.png
+fig -> C:\Users\zxc22\OneDrive\桌面\claude file\FactoryVision\work\figures\stage3\threshold_sweep.png
+fig -> C:\Users\zxc22\OneDrive\桌面\claude file\FactoryVision\work\figures\stage3\map_vs_cutoff.png
+fig -> pr_curves.png
+fig -> C:\Users\zxc22\OneDrive\桌面\claude file\FactoryVision\work\figures\stage3\gt_vs_pred.png
+fig -> C:\Users\zxc22\OneDrive\桌面\claude file\FactoryVision\work\figures\stage3\failures.png
+saved -> C:\Users\zxc22\OneDrive\桌面\claude file\FactoryVision\work\outputs\stage3_val_results.json
+failure counts: {'false_positive': 113, 'false_negative': 179, 'poor_localization': 93, 'class_confusion': 1}
+=== STAGE 3 EVAL DONE ===

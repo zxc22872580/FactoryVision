@@ -1,0 +1,105 @@
+{
+  "team_id": "TeamXX",
+  "stage": 2,
+  "architecture": "resnet18",
+  "strategy": "l2sp",
+  "pretrained_source": "torchvision ImageNet-1k (IMAGENET1K_V1)",
+  "input_size": [
+    224,
+    224
+  ],
+  "class_order": [
+    "crazing",
+    "inclusion",
+    "patches",
+    "pitted_surface",
+    "rolled_in_scale",
+    "scratches"
+  ],
+  "normalization_mean": [
+    0.485,
+    0.456,
+    0.406
+  ],
+  "normalization_std": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "seed": 42,
+  "checkpoint_file": "stage2_model.pth",
+  "frozen_layers": [],
+  "trainable_layers": [
+    "all layers (backbone + classifier)"
+  ],
+  "training": {
+    "lr": 0.0001,
+    "weight_decay": 0.0,
+    "batch_size": 16,
+    "epochs": 20,
+    "label_smoothing": 0.05,
+    "merge_train_val": false
+  },
+  "train_time_augmentation": {
+    "random_resized_crop_scale": [
+      0.7,
+      1.0
+    ],
+    "random_horizontal_flip_p": 0.5,
+    "random_vertical_flip_p": 0.5,
+    "random_rotation_degrees": 15,
+    "color_jitter": {
+      "brightness": 0.4,
+      "contrast": 0.4,
+      "p": 0.8
+    },
+    "random_gamma": {
+      "range": [
+        0.6,
+        1.6
+      ],
+      "p": 0.3
+    },
+    "gaussian_blur": {
+      "kernel": 5,
+      "sigma": [
+        0.3,
+        2.0
+      ],
+      "p": 0.3
+    },
+    "downscale_upscale": {
+      "factor": [
+        0.4,
+        0.9
+      ],
+      "p": 0.2
+    },
+    "jpeg_compression": {
+      "quality": [
+        25,
+        85
+      ],
+      "p": 0.3
+    },
+    "gaussian_noise": {
+      "std": [
+        0.01,
+        0.07
+      ],
+      "p": 0.3
+    },
+    "random_erasing": {
+      "p": 0.25,
+      "scale": [
+        0.02,
+        0.15
+      ]
+    }
+  },
+  "model_selection": {
+    "selected_experiment": "resnet18_l2sp",
+    "selection_run_validation_macro_f1": 1.0,
+    "note": "The submitted checkpoint was retrained on train+val after model selection; its validation score is therefore not an independent estimate."
+  }
+}

@@ -1,0 +1,186 @@
+[resnet18_feature_extraction] device=cuda lr=0.001 bs=16 params=11,179,590 trainable=3,078 (0.0%) train_n=1260
+   frozen  : ['entire backbone (all layers before the classifier)']
+   trainable: ['fc (new classifier head)']
+  ep  1 tl=1.3821 ta=0.4976 | vl=0.8161 va=0.8185 vF1=0.8133 *
+  ep  2 tl=0.8886 ta=0.7698 | vl=0.4990 va=0.9444 vF1=0.9432 *
+  ep  3 tl=0.7564 ta=0.8254 | vl=0.4266 va=0.9556 vF1=0.9557 *
+  ep  4 tl=0.6774 ta=0.8437 | vl=0.3991 va=0.9741 vF1=0.9738 *
+  ep  5 tl=0.6373 ta=0.8563 | vl=0.4444 va=0.9370 vF1=0.9316
+  ep  6 tl=0.6086 ta=0.8548 | vl=0.3835 va=0.9667 vF1=0.9659
+  ep  7 tl=0.6041 ta=0.8675 | vl=0.3980 va=0.9667 vF1=0.9659
+  ep  8 tl=0.5979 ta=0.8683 | vl=0.3608 va=0.9778 vF1=0.9775 *
+  ep  9 tl=0.5991 ta=0.8675 | vl=0.3792 va=0.9778 vF1=0.9772
+  ep 10 tl=0.5891 ta=0.8675 | vl=0.3615 va=0.9815 vF1=0.9814 *
+  ep 11 tl=0.5635 ta=0.8873 | vl=0.3444 va=0.9926 vF1=0.9925 *
+  ep 12 tl=0.5640 ta=0.8881 | vl=0.3604 va=0.9778 vF1=0.9774
+  ep 13 tl=0.5590 ta=0.8913 | vl=0.3458 va=0.9815 vF1=0.9814
+  ep 14 tl=0.5387 ta=0.8929 | vl=0.3592 va=0.9815 vF1=0.9813
+  ep 15 tl=0.5645 ta=0.8881 | vl=0.3517 va=0.9778 vF1=0.9776
+  ep 16 tl=0.5495 ta=0.8905 | vl=0.3524 va=0.9741 vF1=0.9737
+  ep 17 tl=0.5402 ta=0.8937 | vl=0.3475 va=0.9741 vF1=0.9736
+  ep 18 tl=0.5475 ta=0.8857 | vl=0.3571 va=0.9667 vF1=0.9662
+  early stop at epoch 18
+  robust macro F1 (internal probe) = 0.8893
+[resnet18_feature_extraction] best ep 11 | val acc=0.9926 macroF1=0.9925 | 218s | ckpt 42.7 MB
+  confusion matrix:
+ [[45  0  0  0  0  0]
+ [ 0 43  0  0  1  1]
+ [ 0  0 45  0  0  0]
+ [ 0  0  0 45  0  0]
+ [ 0  0  0  0 45  0]
+ [ 0  0  0  0  0 45]]
+[resnet18_full_finetune] device=cuda lr=0.0001 bs=16 params=11,179,590 trainable=11,179,590 (100.0%) train_n=1260
+   frozen  : []
+   trainable: ['all layers (backbone + classifier)']
+  ep  1 tl=0.7156 ta=0.8111 | vl=0.3315 va=0.9852 vF1=0.9851 *
+  ep  2 tl=0.4533 ta=0.9206 | vl=0.3083 va=0.9889 vF1=0.9888 *
+  ep  3 tl=0.4029 ta=0.9460 | vl=0.2877 va=0.9963 vF1=0.9963 *
+  ep  4 tl=0.3573 ta=0.9619 | vl=0.2808 va=1.0000 vF1=1.0000 *
+  ep  5 tl=0.3267 ta=0.9802 | vl=0.2672 va=1.0000 vF1=1.0000
+  ep  6 tl=0.3350 ta=0.9730 | vl=0.2698 va=1.0000 vF1=1.0000
+  ep  7 tl=0.3219 ta=0.9810 | vl=0.2692 va=1.0000 vF1=1.0000
+  ep  8 tl=0.3267 ta=0.9762 | vl=0.2687 va=1.0000 vF1=1.0000
+  ep  9 tl=0.2996 ta=0.9873 | vl=0.2642 va=1.0000 vF1=1.0000
+  ep 10 tl=0.3049 ta=0.9841 | vl=0.2647 va=1.0000 vF1=1.0000
+  ep 11 tl=0.3053 ta=0.9873 | vl=0.2595 va=1.0000 vF1=1.0000
+  early stop at epoch 11
+  robust macro F1 (internal probe) = 0.9310
+[resnet18_full_finetune] best ep 4 | val acc=1.0000 macroF1=1.0000 | 333s | ckpt 42.7 MB
+  confusion matrix:
+ [[45  0  0  0  0  0]
+ [ 0 45  0  0  0  0]
+ [ 0  0 45  0  0  0]
+ [ 0  0  0 45  0  0]
+ [ 0  0  0  0 45  0]
+ [ 0  0  0  0  0 45]]
+Downloading: "https://download.pytorch.org/models/densenet121-a639ec97.pth" to C:\Users\zxc22/.cache\torch\hub\checkpoints\densenet121-a639ec97.pth
+  0%|          | 0.00/30.8M [00:00<?, ?B/s]  2%|¢j         | 768k/30.8M [00:00<00:04, 7.55MB/s]  6%|¢m         | 1.75M/30.8M [00:00<00:03, 8.83MB/s]  9%|¢p         | 2.75M/30.8M [00:00<00:03, 9.23MB/s] 12%|¢i¢j        | 3.75M/30.8M [00:00<00:03, 9.43MB/s] 15%|¢i¢m        | 4.75M/30.8M [00:00<00:02, 9.53MB/s] 19%|¢i¢o        | 5.75M/30.8M [00:00<00:02, 9.56MB/s] 22%|¢i¢i¢j       | 6.75M/30.8M [00:00<00:02, 9.60MB/s] 25%|¢i¢i¢m       | 7.75M/30.8M [00:00<00:02, 9.63MB/s] 28%|¢i¢i¢o       | 8.75M/30.8M [00:00<00:02, 9.66MB/s] 32%|¢i¢i¢i¢j      | 9.75M/30.8M [00:01<00:02, 9.66MB/s] 35%|¢i¢i¢i¢l      | 10.8M/30.8M [00:01<00:02, 9.67MB/s] 38%|¢i¢i¢i¢o      | 11.8M/30.8M [00:01<00:02, 9.69MB/s] 41%|¢i¢i¢i¢i¢j     | 12.8M/30.8M [00:01<00:01, 9.70MB/s] 45%|¢i¢i¢i¢i¢l     | 13.8M/30.8M [00:01<00:01, 9.68MB/s] 48%|¢i¢i¢i¢i¢o     | 14.8M/30.8M [00:01<00:01, 9.67MB/s] 51%|¢i¢i¢i¢i¢i     | 15.8M/30.8M [00:01<00:01, 9.68MB/s] 54%|¢i¢i¢i¢i¢i¢l    | 16.8M/30.8M [00:01<00:01, 9.70MB/s] 58%|¢i¢i¢i¢i¢i¢o    | 17.8M/30.8M [00:01<00:01, 9.67MB/s] 61%|¢i¢i¢i¢i¢i¢i    | 18.8M/30.8M [00:02<00:01, 9.68MB/s] 64%|¢i¢i¢i¢i¢i¢i¢l   | 19.8M/30.8M [00:02<00:01, 9.69MB/s] 67%|¢i¢i¢i¢i¢i¢i¢n   | 20.8M/30.8M [00:02<00:01, 9.69MB/s] 71%|¢i¢i¢i¢i¢i¢i¢i   | 21.8M/30.8M [00:02<00:00, 9.68MB/s] 74%|¢i¢i¢i¢i¢i¢i¢i¢l  | 22.8M/30.8M [00:02<00:00, 9.70MB/s] 77%|¢i¢i¢i¢i¢i¢i¢i¢n  | 23.8M/30.8M [00:02<00:00, 9.68MB/s] 80%|¢i¢i¢i¢i¢i¢i¢i¢i  | 24.8M/30.8M [00:02<00:00, 9.69MB/s] 83%|¢i¢i¢i¢i¢i¢i¢i¢i¢k | 25.8M/30.8M [00:02<00:00, 9.69MB/s] 87%|¢i¢i¢i¢i¢i¢i¢i¢i¢n | 26.8M/30.8M [00:02<00:00, 9.70MB/s] 90%|¢i¢i¢i¢i¢i¢i¢i¢i¢p | 27.8M/30.8M [00:03<00:00, 9.70MB/s] 93%|¢i¢i¢i¢i¢i¢i¢i¢i¢i¢k| 28.8M/30.8M [00:03<00:00, 9.68MB/s] 96%|¢i¢i¢i¢i¢i¢i¢i¢i¢i¢n| 29.8M/30.8M [00:03<00:00, 9.67MB/s]100%|¢i¢i¢i¢i¢i¢i¢i¢i¢i¢p| 30.8M/30.8M [00:03<00:00, 9.68MB/s]100%|¢i¢i¢i¢i¢i¢i¢i¢i¢i¢i| 30.8M/30.8M [00:03<00:00, 9.62MB/s]
+[densenet121_feature_extraction] device=cuda lr=0.001 bs=16 params=6,960,006 trainable=6,150 (0.1%) train_n=1260
+   frozen  : ['entire backbone (all layers before the classifier)']
+   trainable: ['classifier (new classifier head)']
+  ep  1 tl=1.3705 ta=0.5270 | vl=0.7544 va=0.8667 vF1=0.8664 *
+  ep  2 tl=0.8713 ta=0.7968 | vl=0.5356 va=0.9111 vF1=0.9098 *
+  ep  3 tl=0.7096 ta=0.8516 | vl=0.4563 va=0.9556 vF1=0.9540 *
+  ep  4 tl=0.6719 ta=0.8548 | vl=0.3767 va=0.9741 vF1=0.9741 *
+  ep  5 tl=0.6282 ta=0.8667 | vl=0.3813 va=0.9741 vF1=0.9739
+  ep  6 tl=0.6078 ta=0.8754 | vl=0.3786 va=0.9630 vF1=0.9629
+  ep  7 tl=0.5864 ta=0.8913 | vl=0.3590 va=0.9815 vF1=0.9812 *
+  ep  8 tl=0.5407 ta=0.9000 | vl=0.3512 va=0.9815 vF1=0.9814 *
+  ep  9 tl=0.5583 ta=0.8897 | vl=0.3669 va=0.9852 vF1=0.9851 *
+  ep 10 tl=0.5300 ta=0.9040 | vl=0.3568 va=0.9815 vF1=0.9813
+  ep 11 tl=0.5293 ta=0.9127 | vl=0.3506 va=0.9889 vF1=0.9888 *
+  ep 12 tl=0.5127 ta=0.9063 | vl=0.3445 va=0.9926 vF1=0.9925 *
+  ep 13 tl=0.5284 ta=0.9056 | vl=0.3463 va=0.9963 vF1=0.9963 *
+  ep 14 tl=0.4967 ta=0.9230 | vl=0.3670 va=0.9741 vF1=0.9741
+  ep 15 tl=0.5023 ta=0.9206 | vl=0.3503 va=0.9889 vF1=0.9889
+  ep 16 tl=0.5017 ta=0.9183 | vl=0.3593 va=0.9852 vF1=0.9851
+  ep 17 tl=0.4976 ta=0.9151 | vl=0.3555 va=0.9926 vF1=0.9926
+  ep 18 tl=0.5026 ta=0.9183 | vl=0.3504 va=0.9926 vF1=0.9926
+  ep 19 tl=0.4948 ta=0.9206 | vl=0.3410 va=1.0000 vF1=1.0000 *
+  ep 20 tl=0.4802 ta=0.9246 | vl=0.3630 va=0.9815 vF1=0.9813
+  robust macro F1 (internal probe) = 0.9231
+[densenet121_feature_extraction] best ep 19 | val acc=1.0000 macroF1=1.0000 | 431s | ckpt 27.1 MB
+  confusion matrix:
+ [[45  0  0  0  0  0]
+ [ 0 45  0  0  0  0]
+ [ 0  0 45  0  0  0]
+ [ 0  0  0 45  0  0]
+ [ 0  0  0  0 45  0]
+ [ 0  0  0  0  0 45]]
+[densenet121_full_finetune] device=cuda lr=0.0001 bs=16 params=6,960,006 trainable=6,960,006 (100.0%) train_n=1260
+   frozen  : []
+   trainable: ['all layers (backbone + classifier)']
+  ep  1 tl=0.7683 ta=0.8008 | vl=0.3017 va=0.9889 vF1=0.9889 *
+  ep  2 tl=0.4066 ta=0.9421 | vl=0.3014 va=0.9778 vF1=0.9774
+  ep  3 tl=0.3534 ta=0.9659 | vl=0.2713 va=1.0000 vF1=1.0000 *
+  ep  4 tl=0.3579 ta=0.9730 | vl=0.2631 va=1.0000 vF1=1.0000
+  ep  5 tl=0.3390 ta=0.9698 | vl=0.2719 va=1.0000 vF1=1.0000
+  ep  6 tl=0.3323 ta=0.9738 | vl=0.2664 va=0.9926 vF1=0.9926
+  ep  7 tl=0.3189 ta=0.9810 | vl=0.2751 va=0.9963 vF1=0.9963
+  ep  8 tl=0.3067 ta=0.9849 | vl=0.2696 va=0.9926 vF1=0.9925
+  ep  9 tl=0.2869 ta=0.9921 | vl=0.2575 va=1.0000 vF1=1.0000
+  ep 10 tl=0.2921 ta=0.9905 | vl=0.2570 va=1.0000 vF1=1.0000
+  early stop at epoch 10
+  robust macro F1 (internal probe) = 0.9632
+[densenet121_full_finetune] best ep 3 | val acc=1.0000 macroF1=1.0000 | 634s | ckpt 27.1 MB
+  confusion matrix:
+ [[45  0  0  0  0  0]
+ [ 0 45  0  0  0  0]
+ [ 0  0 45  0  0  0]
+ [ 0  0  0 45  0  0]
+ [ 0  0  0  0 45  0]
+ [ 0  0  0  0  0 45]]
+[resnet18_last_k] device=cuda lr=0.0001 bs=16 params=11,179,590 trainable=10,496,518 (93.9%) train_n=1260
+   frozen  : ['conv1', 'bn1', 'layer1', 'layer2']
+   trainable: ['layer3', 'layer4', 'fc (classifier head)']
+  ep  1 tl=0.7075 ta=0.8198 | vl=0.3099 va=1.0000 vF1=1.0000 *
+  ep  2 tl=0.4488 ta=0.9310 | vl=0.3035 va=0.9889 vF1=0.9888
+  ep  3 tl=0.3915 ta=0.9532 | vl=0.2983 va=0.9889 vF1=0.9888
+  ep  4 tl=0.3725 ta=0.9611 | vl=0.2926 va=0.9963 vF1=0.9963
+  ep  5 tl=0.3584 ta=0.9683 | vl=0.2841 va=1.0000 vF1=1.0000
+  ep  6 tl=0.3496 ta=0.9714 | vl=0.2758 va=1.0000 vF1=1.0000
+  ep  7 tl=0.3487 ta=0.9643 | vl=0.2832 va=0.9926 vF1=0.9926
+  ep  8 tl=0.3502 ta=0.9643 | vl=0.2685 va=1.0000 vF1=1.0000
+  early stop at epoch 8
+  robust macro F1 (internal probe) = 0.9390
+[resnet18_last_k] best ep 1 | val acc=1.0000 macroF1=1.0000 | 254s | ckpt 42.7 MB
+  confusion matrix:
+ [[45  0  0  0  0  0]
+ [ 0 45  0  0  0  0]
+ [ 0  0 45  0  0  0]
+ [ 0  0  0 45  0  0]
+ [ 0  0  0  0 45  0]
+ [ 0  0  0  0  0 45]]
+[resnet18_l2sp] device=cuda lr=0.0001 bs=16 params=11,179,590 trainable=11,179,590 (100.0%) train_n=1260
+   frozen  : []
+   trainable: ['all layers (backbone + classifier)']
+  ep  1 tl=0.7547 ta=0.8087 | vl=0.3235 va=0.9889 vF1=0.9889 *
+  ep  2 tl=0.5146 ta=0.9230 | vl=0.2983 va=0.9926 vF1=0.9925 *
+  ep  3 tl=0.4808 ta=0.9460 | vl=0.2781 va=1.0000 vF1=1.0000 *
+  ep  4 tl=0.4511 ta=0.9619 | vl=0.2785 va=1.0000 vF1=1.0000
+  ep  5 tl=0.4244 ta=0.9762 | vl=0.2707 va=1.0000 vF1=1.0000
+  ep  6 tl=0.4241 ta=0.9778 | vl=0.2698 va=0.9963 vF1=0.9963
+  ep  7 tl=0.4161 ta=0.9817 | vl=0.2718 va=1.0000 vF1=1.0000
+  ep  8 tl=0.4262 ta=0.9690 | vl=0.2696 va=1.0000 vF1=1.0000
+  ep  9 tl=0.3960 ta=0.9857 | vl=0.2650 va=0.9963 vF1=0.9963
+  ep 10 tl=0.4027 ta=0.9810 | vl=0.2672 va=1.0000 vF1=1.0000
+  early stop at epoch 10
+  robust macro F1 (internal probe) = 0.9790
+[resnet18_l2sp] best ep 3 | val acc=1.0000 macroF1=1.0000 | 321s | ckpt 42.7 MB
+  confusion matrix:
+ [[45  0  0  0  0  0]
+ [ 0 45  0  0  0  0]
+ [ 0  0 45  0  0  0]
+ [ 0  0  0 45  0  0]
+ [ 0  0  0  0 45  0]
+ [ 0  0  0  0  0 45]]
+Downloading: "https://download.pytorch.org/models/mobilenet_v3_small-047dcff4.pth" to C:\Users\zxc22/.cache\torch\hub\checkpoints\mobilenet_v3_small-047dcff4.pth
+  0%|          | 0.00/9.83M [00:00<?, ?B/s]  9%|¢p         | 896k/9.83M [00:00<00:01, 8.12MB/s] 19%|¢i¢p        | 1.88M/9.83M [00:00<00:00, 9.03MB/s] 29%|¢i¢i¢p       | 2.88M/9.83M [00:00<00:00, 9.34MB/s] 39%|¢i¢i¢i¢p      | 3.88M/9.83M [00:00<00:00, 9.47MB/s] 50%|¢i¢i¢i¢i¢p     | 4.88M/9.83M [00:00<00:00, 9.57MB/s] 60%|¢i¢i¢i¢i¢i¢p    | 5.88M/9.83M [00:00<00:00, 9.59MB/s] 70%|¢i¢i¢i¢i¢i¢i¢p   | 6.88M/9.83M [00:00<00:00, 9.64MB/s] 80%|¢i¢i¢i¢i¢i¢i¢i¢i  | 7.88M/9.83M [00:00<00:00, 9.65MB/s] 90%|¢i¢i¢i¢i¢i¢i¢i¢i¢i | 8.88M/9.83M [00:00<00:00, 9.67MB/s]100%|¢i¢i¢i¢i¢i¢i¢i¢i¢i¢i| 9.83M/9.83M [00:01<00:00, 9.69MB/s]100%|¢i¢i¢i¢i¢i¢i¢i¢i¢i¢i| 9.83M/9.83M [00:01<00:00, 9.53MB/s]
+[mobilenet_v3_small_full_finetune] device=cuda lr=0.0001 bs=16 params=1,524,006 trainable=1,524,006 (100.0%) train_n=1260
+   frozen  : []
+   trainable: ['all layers (backbone + classifier)']
+  ep  1 tl=1.2165 ta=0.6190 | vl=0.8141 va=0.8222 vF1=0.8122 *
+  ep  2 tl=0.5507 ta=0.9000 | vl=0.4113 va=0.9481 vF1=0.9455 *
+  ep  3 tl=0.4614 ta=0.9190 | vl=0.3751 va=0.9630 vF1=0.9619 *
+  ep  4 tl=0.4163 ta=0.9421 | vl=0.3353 va=0.9852 vF1=0.9850 *
+  ep  5 tl=0.4141 ta=0.9413 | vl=0.2981 va=0.9889 vF1=0.9888 *
+  ep  6 tl=0.4019 ta=0.9476 | vl=0.3003 va=0.9889 vF1=0.9889 *
+  ep  7 tl=0.3493 ta=0.9675 | vl=0.2964 va=0.9926 vF1=0.9925 *
+  ep  8 tl=0.3563 ta=0.9667 | vl=0.2825 va=0.9926 vF1=0.9925
+  ep  9 tl=0.3509 ta=0.9635 | vl=0.3095 va=0.9815 vF1=0.9813
+  ep 10 tl=0.3527 ta=0.9667 | vl=0.2939 va=0.9889 vF1=0.9888
+  ep 11 tl=0.3438 ta=0.9675 | vl=0.2876 va=0.9926 vF1=0.9925
+  ep 12 tl=0.3353 ta=0.9778 | vl=0.2840 va=0.9889 vF1=0.9888
+  ep 13 tl=0.3387 ta=0.9698 | vl=0.2816 va=0.9926 vF1=0.9925
+  ep 14 tl=0.3460 ta=0.9675 | vl=0.2832 va=0.9926 vF1=0.9925
+  early stop at epoch 14
+  robust macro F1 (internal probe) = 0.9702
+[mobilenet_v3_small_full_finetune] best ep 7 | val acc=0.9926 macroF1=0.9925 | 125s | ckpt 5.9 MB
+  confusion matrix:
+ [[45  0  0  0  0  0]
+ [ 0 43  1  0  0  1]
+ [ 0  0 45  0  0  0]
+ [ 0  0  0 45  0  0]
+ [ 0  0  0  0 45  0]
+ [ 0  0  0  0  0 45]]
+=== STAGE 2 GRID DONE ===

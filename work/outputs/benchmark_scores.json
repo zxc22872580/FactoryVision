@@ -1,0 +1,26 @@
+{
+  "_note": "TA 公布 Hidden Benchmark 成績後，把下面的 null 換成實際數值，再重新產生 Final Report。未填寫時報告會標示「待 TA 公布」。",
+  "stage1": {
+    "benchmark": "Classification Benchmark A (90 images)",
+    "macro_f1": null,
+    "score": null,
+    "max_score": 10
+  },
+  "stage2": {
+    "benchmark": "Classification Benchmark B (180 images) + 3 robustness variants",
+    "standard_macro_f1": null,
+    "lighting_macro_f1": null,
+    "optical_macro_f1": null,
+    "sensor_compression_macro_f1": null,
+    "robust_macro_f1": null,
+    "standard_score": null,
+    "robust_score": null,
+    "max_score": 12
+  },
+  "stage3": {
+    "benchmark": "NEU-DET Hidden (270 images)",
+    "map50": null,
+    "score": null,
+    "max_score": 12
+  }
+}
