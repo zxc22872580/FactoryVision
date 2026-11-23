@@ -1,5 +1,5 @@
 {
-  "team_id": "TeamXX",
+  "team_id": "Team13",
   "stage": 1,
   "model_name": "BaselineCNN(from scratch) + Data Augmentation + Batch Normalization",
   "input_size": [

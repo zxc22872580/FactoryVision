@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Local pre-flight check that mimics what the TA runner does.
 
-    python check_submission.py --stage 1 --submission ../TeamXX_Stage1 \
+    python check_submission.py --stage 1 --submission ../Team13_Stage1 \
         --sample_dir <folder with images>
 
 Checks the required file names, runs the fixed command in a temp directory
@@ -66,7 +66,7 @@ def main():
     stage = args.stage
 
     print("== file structure ==")
-    expected_root = "TeamXX_Stage{}".format(stage)
+    expected_root = "Team13_Stage{}".format(stage)
     check(os.path.basename(sub).endswith("_Stage{}".format(stage)),
           "root folder name ends with _Stage{} (got '{}')".format(
               stage, os.path.basename(sub)))

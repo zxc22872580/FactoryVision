@@ -1,5 +1,5 @@
 {
-  "team_id": "TeamXX",
+  "team_id": "Team13",
   "stage": 3,
   "detector": "YOLOv8s",
   "backbone": "CSPDarknet (YOLOv8s)",

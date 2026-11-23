@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-"""Generate TeamXX_Final_Report.pdf — the cross-stage summary report.
+"""Generate Team13_Final_Report.pdf — the cross-stage summary report.
 
 It only reads artifacts produced by the three stage submissions; nothing is
-re-trained here.  Hidden Benchmark scores are read from
-``work/outputs/benchmark_scores.json`` and shown as "待 TA 公布" while they
-are still ``null``.
+re-trained here.
+
+Per the TA announcement, the Final Report analyses the *training / validation*
+results only - Hidden Benchmark scores are produced by the TA after submission
+and are deliberately not discussed here.
 """
 import json
 import os
@@ -22,7 +24,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 OUTD = os.path.join(HERE, "outputs")
 FIG = os.path.join(HERE, "figures")
-TEAM = "TeamXX"
+TEAM = "Team13"
 OUT = os.path.join(ROOT, "{}_Final_Report.pdf".format(TEAM))
 CLS = PL.CLASS_ORDER
 
@@ -44,19 +46,7 @@ def jload(p, default=None):
         return json.load(f)
 
 
-def bscore(v, suffix=""):
-    return "待 TA 公布" if v is None else (fmt(v) + suffix)
-
-
-def lin(x, lo, hi, full):
-    """Linear benchmark scoring used by the course."""
-    if x is None:
-        return None
-    return round(max(0.0, min(1.0, (x - lo) / (hi - lo))) * full, 2)
-
-
 def main():
-    B = jload(os.path.join(OUTD, "benchmark_scores.json"), {})
     split = jload(os.path.join(OUTD, "split_analysis.json"), {})
     trad = jload(os.path.join(OUTD, "stage1_traditional_results.json"), {})
     stress = jload(os.path.join(OUTD, "stage1_stress_eval.json"), {})
@@ -152,8 +142,9 @@ def main():
         "六個類別：crazing、inclusion、patches、pitted_surface、"
         "rolled_in_scale、scratches；影像為 200×200 灰階。",
         "Classification 與 Detection 使用相同 Master Split，避免跨 Stage 洩漏。",
-        "Hidden Test 的影像與標註僅由 TA 保管，學生端完全看不到；"
-        "本報告中所有「Hidden Benchmark」欄位皆由 TA 執行後回填。",
+        "Hidden Test 的影像與標註僅由 TA 保管，學生端完全看不到。三個 Stage "
+        "一併於期末繳交，Benchmark 由 TA 在收件後執行，因此本報告的所有分析"
+        "一律以 Public Training / Validation 的結果為依據。",
         "Validation 僅用於 hyperparameter selection、model selection、"
         "early stopping 與 performance comparison。",
         "所有實驗固定 random seed = 42 並使用課程提供的固定 split。",
@@ -280,13 +271,12 @@ def main():
                          max(stress[k]["optical"]["macro_f1"]
                              for k in stress)))]
 
-    st += [H("2.4 Final Improved CNN 與 Hidden Benchmark", 2)]
+    st += [H("2.4 Final Improved CNN", 2)]
     st += [P("最終選擇 <b>{}</b>（{}），並依規則以 Train + Validation 共 1,530 張"
              "重新訓練一次產生提交用 checkpoint。"
              .format(dict(S1_EXPS).get(s1_final_key, s1_final_key),
                      "、".join(s1_cfg.get("improvement_methods", []))
                      or "Baseline"))]
-    b1 = B.get("stage1", {})
     st += [table([
         ["項目", "數值"],
         ["Final Model", s1_cfg.get("model_name", "—")],
@@ -297,13 +287,8 @@ def main():
          fmt(S1[s1_final_key]["val"]["macro_f1"])],
         ["劣化條件平均 Macro F1",
          fmt(stress[s1_final_key]["stress_macro_f1"]) if stress else "—"],
-        ["<b>Hidden Benchmark A（90 張）Macro F1</b>",
-         "<b>{}</b>".format(bscore(b1.get("macro_f1")))],
-        ["<b>Stage 1 Benchmark 得分（滿分 10）</b>",
-         "<b>{}</b>".format(
-             "待 TA 公布" if b1.get("macro_f1") is None
-             else "{} / 10".format(lin(b1["macro_f1"], 0.70, 0.90, 10)))],
-    ], col_widths=[62 * mm, 112 * mm], highlight_rows=(6, 7))]
+        ["提交的 checkpoint", "stage1_model.pth（Train + Val 1,530 張重訓版）"],
+    ], col_widths=[62 * mm, 112 * mm], highlight_rows=(4, 5))]
 
     # ---- 3. Stage 2
     st += [PageBreak(), H("3. Stage 2：Transfer Learning Challenge", 1)]
@@ -380,8 +365,7 @@ def main():
                      "因此在三種劣化下都最穩定。"
                      .format(fmt(rb("resnet18_l2sp"))))]
 
-    st += [H("3.2 Final Model 與 Hidden Benchmark", 2)]
-    b2 = B.get("stage2", {})
+    st += [H("3.2 Final Model", 2)]
     sel = S2.get(s2_final_key, {})
     st += [table([
         ["項目", "數值"],
@@ -396,20 +380,8 @@ def main():
         ["Public Validation Macro F1", fmt(sel.get("val", {}).get("macro_f1", 0))],
         ["內部 Robust Macro F1", fmt(sel.get("robustness", {})
                                  .get("robust_macro_f1", float("nan")))],
-        ["<b>Hidden Standard Benchmark Macro F1</b>",
-         "<b>{}</b>".format(bscore(b2.get("standard_macro_f1")))],
-        ["<b>Hidden Robust Macro F1</b>",
-         "<b>{}</b>".format(bscore(b2.get("robust_macro_f1")))],
-        ["<b>Stage 2 Benchmark 得分（滿分 12）</b>",
-         "<b>{}</b>".format(
-             "待 TA 公布" if (b2.get("standard_macro_f1") is None
-                          or b2.get("robust_macro_f1") is None)
-             else "{} + {} = {} / 12".format(
-                 lin(b2["standard_macro_f1"], 0.80, 0.95, 6),
-                 lin(b2["robust_macro_f1"], 0.60, 0.85, 6),
-                 round(lin(b2["standard_macro_f1"], 0.80, 0.95, 6)
-                       + lin(b2["robust_macro_f1"], 0.60, 0.85, 6), 2)))],
-    ], col_widths=[62 * mm, 112 * mm], highlight_rows=(8, 9, 10))]
+        ["提交的 checkpoint", "stage2_model.pth（Train 1,260 張選模版）"],
+    ], col_widths=[62 * mm, 112 * mm], highlight_rows=(6, 7))]
     st += [P("Standard 與三個 Robustness Benchmark 全部使用同一份 "
              "stage2_model.pth、同一支 stage2_inference.py 與同一套 "
              "preprocessing；程式不讀取資料夾名稱，也不依 benchmark 類型"
@@ -481,17 +453,6 @@ def main():
         st += [figure_block(os.path.join(FIG, "stage3", "gt_vs_pred.png"), 172,
                             "圖 5：Ground Truth（綠）vs Prediction（紅）。")]
 
-    b3 = B.get("stage3", {})
-    st += [H("4.1 Hidden Benchmark", 2)]
-    st += [table([
-        ["項目", "數值"],
-        ["<b>Hidden Detection mAP@0.5（270 張）</b>",
-         "<b>{}</b>".format(bscore(b3.get("map50")))],
-        ["<b>Stage 3 Benchmark 得分（滿分 12）</b>",
-         "<b>{}</b>".format("待 TA 公布" if b3.get("map50") is None
-                            else "{} / 12".format(
-                                lin(b3["map50"], 0.65, 0.90, 12)))],
-    ], col_widths=[72 * mm, 102 * mm], highlight_rows=(1, 2))]
 
     # ---- 5. Failure Analysis
     st += [PageBreak(), H("5. Failure Analysis（跨 Stage）", 1)]
@@ -654,31 +615,35 @@ def main():
     # ---- 7. Conclusion
     st += [PageBreak(), H("7. Conclusion：Final FactoryVision System Decision", 1)]
     st += [table([
-        ["Stage", "Final Model", "Public Validation", "Hidden Benchmark",
-         "Benchmark 得分"],
+        ["Stage", "Final Model", "主要指標（Public Validation）",
+         "更嚴苛條件下的表現", "提交的 checkpoint"],
         ["Stage 1", s1_cfg.get("model_name", "—"),
          "Macro F1 {}".format(fmt(S1[s1_final_key]["val"]["macro_f1"]))
          if s1_final_key in S1 else "—",
-         bscore(b1.get("macro_f1")),
-         "待 TA 公布" if b1.get("macro_f1") is None
-         else "{} / 10".format(lin(b1["macro_f1"], 0.70, 0.90, 10))],
+         "劣化平均 Macro F1 {}".format(
+             fmt(stress[s1_final_key]["stress_macro_f1"]))
+         if stress and s1_final_key in stress else "—",
+         "stage1_model.pth"],
         ["Stage 2", "{} + {}".format(s2_cfg.get("architecture", "—"),
                                      s2_cfg.get("strategy", "—")),
          "Macro F1 {}".format(fmt(sel.get("val", {}).get("macro_f1", 0)))
          if sel else "—",
-         "Std {} / Robust {}".format(bscore(b2.get("standard_macro_f1")),
-                                     bscore(b2.get("robust_macro_f1"))),
-         "待 TA 公布" if (b2.get("standard_macro_f1") is None
-                      or b2.get("robust_macro_f1") is None)
-         else "{} / 12".format(
-             round(lin(b2["standard_macro_f1"], 0.80, 0.95, 6)
-                   + lin(b2["robust_macro_f1"], 0.60, 0.85, 6), 2))],
+         "Robust Macro F1 {}".format(
+             fmt(sel.get("robustness", {}).get("robust_macro_f1",
+                                               float("nan"))))
+         if sel else "—",
+         "stage2_model.pth"],
         ["Stage 3", s3_cfg.get("detector", "—"),
          "mAP@0.5 {}".format(fmt(val3.get("map50", 0))) if val3 else "—",
-         bscore(b3.get("map50")),
-         "待 TA 公布" if b3.get("map50") is None
-         else "{} / 12".format(lin(b3["map50"], 0.65, 0.90, 12))],
-    ], col_widths=[20 * mm, 50 * mm, 34 * mm, 38 * mm, 32 * mm], font_size=7.8)]
+         "micro P/R {} / {} @0.25".format(
+             fmt(val3.get("micro_precision_at_thr", 0), 3),
+             fmt(val3.get("micro_recall_at_thr", 0), 3)) if val3 else "—",
+         "stage3_model.pt"],
+    ], col_widths=[18 * mm, 46 * mm, 38 * mm, 44 * mm, 28 * mm],
+        font_size=7.6)]
+    st += [P("依 TA 公告，三個 Stage 一併於期末繳交、Hidden Benchmark 由 TA "
+             "在收件後執行，因此本報告的分析全部建立在 Public Training / "
+             "Validation 的結果上，不包含 Hidden Benchmark 成績。", "note")]
     if f_overview:
         st += [Spacer(1, 3 * mm), figure_block(
             f_overview, 145, "圖 7：三個 Stage 在公開 validation 上的成績。")]
@@ -718,9 +683,10 @@ def main():
                      s3_cfg.get("detector", "—")))]
 
     st += [Spacer(1, 4 * mm),
-           P("附註：本報告只統整三個 Stage 正式提交過的結果，"
-             "所有 Final Model 與指標皆與各 Stage 的 submission 完全一致，"
-             "未使用任何截止後重新訓練的模型。Hidden Benchmark 欄位由 TA 執行後回填。",
+           P("附註：本報告只統整三個 Stage 實際提交的結果，所有 Final Model 與"
+             "指標皆與 submission 內的 checkpoint 完全一致，未使用任何"
+             "另外重新訓練的模型。三份 stage 報告（stage1/2/3_report.pdf）"
+             "收錄完整的實驗設定、曲線與逐類別指標，本報告為跨 Stage 的統整。",
              "note")]
 
     RB.build(OUT, st, title="FactoryVision Final Report — {}".format(TEAM),

@@ -1,4 +1,4 @@
-# TeamXX — FactoryVision Stage 3
+# Team13 — FactoryVision Stage 3
 
 Object Detection（鋼材表面瑕疵定位）
 
@@ -44,7 +44,7 @@ Confidence threshold 刻意設為 0.001（很低）：官方 mAP 以整條 PR �
 ## 目錄說明
 
 ```
-TeamXX_Stage3/
+Team13_Stage3/
 ├─ stage3_report.pdf
 ├─ stage3_detect.py
 ├─ stage3_model.pt

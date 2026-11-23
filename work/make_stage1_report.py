@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Generate TeamXX_Stage1/stage1_report.pdf from the experiment artifacts."""
+"""Generate Team13_Stage1/stage1_report.pdf from the experiment artifacts."""
 import json
 import os
 import sys
@@ -15,8 +15,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 RUNS = os.path.join(HERE, "stage1_runs")
 FIG = os.path.join(HERE, "figures", "stage1")
-OUT = os.path.join(ROOT, "TeamXX_Stage1", "stage1_report.pdf")
-TEAM = "TeamXX"
+OUT = os.path.join(ROOT, "Team13_Stage1", "stage1_report.pdf")
+TEAM = "Team13"
 
 EXPS = [("E1_baseline", "E1 Baseline CNN", "○", "○"),
         ("E2_aug", "E2 Baseline + A", "●", "○"),

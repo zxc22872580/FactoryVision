@@ -183,7 +183,7 @@ def figure_block(path, width_mm=160, caption=None):
     return KeepTogether(figure(path, width_mm, caption))
 
 
-def build(path, story, title="FactoryVision", author="TeamXX"):
+def build(path, story, title="FactoryVision", author="Team13"):
     os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
 
     def footer(canvas, doc):

@@ -3,7 +3,7 @@
 #   2 architecture families x 2 strategies = the 4 required fair comparisons,
 #   plus 3 extra runs used for the deployment analysis.
 set -e
-cd "$(dirname "$0")/../TeamXX_Stage2/src"
+cd "$(dirname "$0")/../Team13_Stage2/src"
 D="$1"
 O="../../work/stage2_runs"
 COMMON="--data_root $D --epochs 20 --batch_size 16 --patience 7 --amp --num_workers 4 --out_dir $O"

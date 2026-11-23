@@ -1,4 +1,4 @@
-# TeamXX — FactoryVision Stage 2
+# Team13 — FactoryVision Stage 2
 
 Transfer Learning Challenge（鋼材表面瑕疵分類）
 
@@ -46,7 +46,7 @@ backbone 以 `pretrained=False` 建立後由 `stage2_model.pth` 載入權重，�
 ## 目錄說明
 
 ```
-TeamXX_Stage2/
+Team13_Stage2/
 ├─ stage2_report.pdf
 ├─ stage2_inference.py
 ├─ stage2_model.pth

@@ -14,8 +14,11 @@ NUM_CLASSES = len(CLASS_ORDER)
 SEED = 42
 IMG_EXT = (".png", ".jpg", ".jpeg", ".bmp", ".tif", ".tiff")
 
-# Grayscale statistics of the FactoryVision classification training split
-# (computed once over the 1,260 training images, see src/train.py --stats).
+# Grayscale statistics of the FactoryVision classification training split,
+# computed once over the 1,260 training images only (never over validation):
+#     mean = sum(pixel) / N, std = sqrt(E[x^2] - E[x]^2), pixels scaled to [0,1]
+# They are hard-coded so that training and benchmark inference always use the
+# exact same normalisation.
 NORM_MEAN = [0.5070]
 NORM_STD = [0.2132]
 INPUT_SIZE = 128

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Generate TeamXX_Stage3/stage3_report.pdf from the detection artifacts."""
+"""Generate Team13_Stage3/stage3_report.pdf from the detection artifacts."""
 import json
 import os
 import sys
@@ -13,8 +13,8 @@ from report_builder import (H, P, PageBreak, Spacer, bullets, figure_block,
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 FIG = os.path.join(HERE, "figures", "stage3")
-OUT = os.path.join(ROOT, "TeamXX_Stage3", "stage3_report.pdf")
-TEAM = "TeamXX"
+OUT = os.path.join(ROOT, "Team13_Stage3", "stage3_report.pdf")
+TEAM = "Team13"
 CLS = PL.CLASS_ORDER
 
 

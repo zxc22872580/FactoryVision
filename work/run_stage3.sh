@@ -6,7 +6,7 @@
 # Absolute paths are used for --project because Ultralytics resolves a
 # relative project path against its own settings directory, not the cwd.
 set -e
-cd "$(dirname "$0")/../TeamXX_Stage3/src"
+cd "$(dirname "$0")/../Team13_Stage3/src"
 D="$1"
 WORK="$(cd ../../work && pwd)"
 DS="$WORK/det_dataset"

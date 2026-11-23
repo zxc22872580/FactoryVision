@@ -7,7 +7,7 @@ import shutil
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-TEAM = "TeamXX"
+TEAM = "Team13"
 CLASS_ORDER = ["crazing", "inclusion", "patches",
                "pitted_surface", "rolled_in_scale", "scratches"]
 

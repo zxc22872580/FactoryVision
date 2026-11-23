@@ -18,7 +18,7 @@ import numpy as np
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(os.path.dirname(HERE), "TeamXX_Stage1", "src"))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Team13_Stage1", "src"))
 sys.path.insert(0, HERE)
 from common import CLASS_ORDER, list_split  # noqa: E402
 import plots as PL  # noqa: E402

@@ -1,4 +1,4 @@
-# TeamXX — FactoryVision Stage 1
+# Team13 — FactoryVision Stage 1
 
 Baseline + Improved CNN（鋼材表面瑕疵分類）
 
@@ -45,7 +45,7 @@ inference 使用 `model.eval()` + `torch.no_grad()`，不使用 TTA、Ensemble �
 ## 目錄說明
 
 ```
-TeamXX_Stage1/
+Team13_Stage1/
 ├─ stage1_report.pdf      完整實驗報告
 ├─ stage1_inference.py    Benchmark inference（唯一入口）
 ├─ stage1_model.pth       Final Improved CNN checkpoint
