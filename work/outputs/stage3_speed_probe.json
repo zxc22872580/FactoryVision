@@ -1,0 +1,55 @@
+{
+ "device": "NVIDIA GeForce GTX 1650 Ti (4.29 GB)",
+ "note": "2-epoch probe; epoch-2 minus epoch-1 wall time",
+ "measurements": [
+  {
+   "model": "yolov8s",
+   "batch": 8,
+   "imgsz": 640,
+   "sec_per_epoch": 99.6,
+   "peak_vram_mb": 3970
+  },
+  {
+   "model": "yolo11s",
+   "batch": 4,
+   "imgsz": 640,
+   "sec_per_epoch": 105.1,
+   "peak_vram_mb": 2655
+  },
+  {
+   "model": "yolo11s",
+   "batch": 8,
+   "imgsz": 512,
+   "sec_per_epoch": 73.0,
+   "peak_vram_mb": 3381
+  },
+  {
+   "model": "yolo11s",
+   "batch": 16,
+   "imgsz": 416,
+   "sec_per_epoch": 56.2,
+   "peak_vram_mb": 3817
+  },
+  {
+   "model": "yolov9s",
+   "batch": 8,
+   "imgsz": 512,
+   "sec_per_epoch": 80.3,
+   "peak_vram_mb": 3456
+  },
+  {
+   "model": "yolov10s",
+   "batch": 8,
+   "imgsz": 512,
+   "sec_per_epoch": 79.5,
+   "peak_vram_mb": 3460
+  },
+  {
+   "model": "yolo12s",
+   "batch": 8,
+   "imgsz": 512,
+   "sec_per_epoch": 85.0,
+   "peak_vram_mb": 3928
+  }
+ ]
+}

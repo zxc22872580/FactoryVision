@@ -1392,6 +1392,277 @@ for k, iid in enumerate(ids):
 plt.tight_layout(); plt.show()
 """)
 
+# ============================================================ 6.7 sweep
+md(r"""
+---
+## 6.7 ★ 多模型 / 多設定比較（sweep）
+
+目前繳交的 YOLOv8s 在 validation 上是 **mAP@0.5 = 0.7419**，低分集中在兩類：
+
+| 類別 | AP@0.5 | 問題 |
+|---|---|---|
+| crazing | **0.456** | 102 個 GT 漏掉 64 個，低對比細微龜裂 |
+| rolled_in_scale | **0.581** | 瀰漫狀紋理，框的邊界本身就模糊 |
+| inclusion | 0.781 | |
+| pitted_surface | 0.849 | |
+| scratches | 0.858 | |
+| patches | 0.928 | |
+
+而且**那次訓練根本還沒收斂**——best 落在第 95/100 epoch，最後 20 個 epoch 還在往上爬
+（`close_mosaic` 在第 80 epoch 關掉 mosaic 之後 mAP50-95 從 0.382 升到 0.419）。
+所以「多跑 epoch」很可能比「換模型」更有效，兩個方向這一節都會測。
+
+### 這一節會做什麼
+
+把每個設定用**同樣的 seed、同樣的 epoch 預算**訓練，然後用 §6.4 那套
+**我們自己實作的 VOC2010+ mAP**（跟 TA 的定義一致）評分，所以數字可以直接跟
+0.7419 比。每跑完一個就把 **權重和結果 JSON 存去 Drive**，Colab 斷線也不會白跑；
+重跑 6.7b 會自動跳過已經有結果的實驗。
+
+### 執行順序
+
+這一節**不需要** §6.2、§6.3、§6.5、§6.6。只要：
+
+```
+§1 全部  →  §2.1  →  §3.1 §3.2  →  §6.1  →  §6.4  →  §6.7a  →  §6.7b  →  §6.7c
+```
+
+（§6.4 是 mAP 的實作，§6.1 是把資料轉成 Ultralytics 的資料夾結構。）
+
+### 時間估計
+
+T4 上 s 級模型 100 epochs 大約 35–40 分鐘，所以 `screen` 這組五個約 **3 小時**，
+`long` 那兩個各約 1.5 小時。6.7b 跑完第一個就會印出實際的 `s/epoch`，
+你看一眼就知道這個估計準不準。
+
+> **免費版 Colab 會在閒置 90 分鐘後斷線**，分頁不要關。斷了就重跑 6.7b 接續。
+
+### 跑完要回報什麼
+
+6.7c 最後會印出一段 JSON，**整段複製貼回對話**就好。我會據此確認結果、
+決定要不要換掉繳交的 checkpoint，並把 Stage 3 報告和 Final Report 的數字改掉。
+""")
+
+code(r"""
+# 6.7a ★ sweep 設定
+SWEEP_DIR    = "/content/drive/MyDrive/FactoryVision/sweep"  # @param {type:"string"}
+SWEEP_EPOCHS = 100       # @param {type:"slider", min:20, max:300, step:10}
+SWEEP_PRESET = "screen"  # @param ["screen", "resolution", "long", "all", "custom"]
+SWEEP_CUSTOM = "yolo11s_640,yolov9s_640"  # @param {type:"string"}
+
+os.makedirs(SWEEP_DIR, exist_ok=True)
+SWEEP_JSON = os.path.join(SWEEP_DIR, "stage3_sweep_results.json")
+
+# 灰階鋼材影像 -> 色相/飽和度抖動沒有意義，只留亮度 hsv_v。
+# 這組跟繳交那次用的完全一樣，才能公平比較。
+BASE_AUG = dict(degrees=10.0, translate=0.1, scale=0.5, fliplr=0.5, flipud=0.5,
+                mosaic=1.0, mixup=0.0, hsv_h=0.0, hsv_s=0.0, hsv_v=0.4)
+
+# T4 有 16 GB，batch 開 16 不會溢出（本機 4 GB 只能 8，那是當初被迫降的）
+EXPERIMENTS = {
+    # --- 架構比較：同預算、同 imgsz ---
+    "yolov8s_640":  dict(weights="yolov8s.pt",  batch=16, imgsz=640),
+    "yolo11s_640":  dict(weights="yolo11s.pt",  batch=16, imgsz=640),
+    "yolov9s_640":  dict(weights="yolov9s.pt",  batch=16, imgsz=640),
+    "yolov10s_640": dict(weights="yolov10s.pt", batch=16, imgsz=640),
+    "yolo12s_640":  dict(weights="yolo12s.pt",  batch=16, imgsz=640),
+    "yolo11m_640":  dict(weights="yolo11m.pt",  batch=8,  imgsz=640),
+    # --- 解析度：原圖只有 200x200，640 已經是 3.2 倍放大 ---
+    "yolo11s_416":  dict(weights="yolo11s.pt",  batch=32, imgsz=416),
+    "yolo11s_512":  dict(weights="yolo11s.pt",  batch=16, imgsz=512),
+    "yolo11s_800":  dict(weights="yolo11s.pt",  batch=8,  imgsz=800),
+    # --- 便宜的那一招：訓練久一點，mosaic 更晚關掉 ---
+    "yolov8s_640_long": dict(weights="yolov8s.pt", batch=16, imgsz=640,
+                             epochs=250, close_mosaic=40),
+    "yolo11s_640_long": dict(weights="yolo11s.pt", batch=16, imgsz=640,
+                             epochs=250, close_mosaic=40),
+    # --- 幾何增強調弱：crazing / rolled_in_scale 的框本來就模糊 ---
+    "yolo11s_640_mildaug": dict(weights="yolo11s.pt", batch=16, imgsz=640,
+                                aug=dict(scale=0.25, degrees=5.0)),
+    "yolo11s_640_cos": dict(weights="yolo11s.pt", batch=16, imgsz=640,
+                            cos_lr=True, lr0=0.01, lrf=0.05),
+}
+
+PRESETS = {
+    "screen":     ["yolov8s_640", "yolo11s_640", "yolov9s_640",
+                   "yolov10s_640", "yolo12s_640"],
+    "resolution": ["yolo11s_416", "yolo11s_512", "yolo11s_640", "yolo11s_800"],
+    "long":       ["yolov8s_640_long", "yolo11s_640_long"],
+    "all":        list(EXPERIMENTS),
+}
+
+SWEEP_LIST = ([s.strip() for s in SWEEP_CUSTOM.split(",") if s.strip()]
+              if SWEEP_PRESET == "custom" else PRESETS[SWEEP_PRESET])
+unknown = [n for n in SWEEP_LIST if n not in EXPERIMENTS]
+assert not unknown, "不認識的實驗名稱: %s" % unknown
+
+# 目前繳交的 checkpoint，用我們自己的 mAP 在本機量到的
+SUBMITTED_MAP50 = 0.7419
+
+print("要跑 %d 個實驗：" % len(SWEEP_LIST))
+for n in SWEEP_LIST:
+    c = EXPERIMENTS[n]
+    print("  %-22s %-13s batch %2d  imgsz %3d  %3d epochs"
+          % (n, c["weights"], c["batch"], c["imgsz"],
+             c.get("epochs", SWEEP_EPOCHS)))
+print()
+print("結果 JSON :", SWEEP_JSON)
+print("權重會存到:", SWEEP_DIR)
+""")
+
+code(r"""
+# 6.7b 執行 sweep（可中斷；重跑這格會跳過已完成的實驗）
+import csv
+import shutil
+from ultralytics import YOLO
+
+SWEEP_RUNS = os.path.join(WORK, "sweep_runs")
+
+gt_sweep = load_gt(os.path.join(det_dir, "validation", "annotations_voc"))
+val_sweep = sorted(glob.glob(os.path.join(det_dir, "validation", "images", "*.png")))
+print("validation: %d 張影像, %d 個 GT 框"
+      % (len(val_sweep), sum(len(v["boxes"]) for v in gt_sweep.values())))
+
+
+def sweep_score(weights, imgsz):
+    '''用 §6.4 那套 TA 定義的 mAP 評一顆 checkpoint，順便量單張延遲。'''
+    m = YOLO(weights)
+    preds, t0 = {}, time.time()
+    for i in range(0, len(val_sweep), 16):
+        chunk = val_sweep[i:i + 16]
+        for p, r in zip(chunk, m.predict(chunk, imgsz=imgsz, conf=0.001,
+                                         iou=0.6, max_det=100, verbose=False)):
+            iid = os.path.splitext(os.path.basename(p))[0]
+            out = []
+            if r.boxes is not None and len(r.boxes):
+                xy = r.boxes.xyxy.cpu().numpy(); cf = r.boxes.conf.cpu().numpy()
+                cl = r.boxes.cls.cpu().numpy().astype(int)
+                out = [(int(cl[j]), float(cf[j]), *[float(v) for v in xy[j]])
+                       for j in range(len(cf))]
+            preds[iid] = out
+    ms = (time.time() - t0) / len(val_sweep) * 1000
+    return evaluate_detections(gt_sweep, preds), ms
+
+
+def load_recs():
+    if os.path.exists(SWEEP_JSON):
+        return json.load(open(SWEEP_JSON, encoding="utf-8"))
+    return []
+
+
+recs = load_recs()
+done = {r["name"] for r in recs}
+
+for name in SWEEP_LIST:
+    if name in done:
+        print("[跳過] %s 已有結果 %.4f"
+              % (name, next(r["map50"] for r in recs if r["name"] == name)))
+        continue
+    cfg = EXPERIMENTS[name]
+    aug = dict(BASE_AUG); aug.update(cfg.get("aug", {}))
+    epochs = cfg.get("epochs", SWEEP_EPOCHS)
+    print("\n" + "=" * 64)
+    print("[跑] %s | %s | batch %d | imgsz %d | %d epochs"
+          % (name, cfg["weights"], cfg["batch"], cfg["imgsz"], epochs))
+    print("=" * 64, flush=True)
+
+    set_seed(SEED)
+    torch.cuda.reset_peak_memory_stats()
+    t0 = time.time()
+    YOLO(cfg["weights"]).train(
+        data=YAML, epochs=epochs, batch=cfg["batch"], imgsz=cfg["imgsz"],
+        seed=SEED, deterministic=True,
+        patience=epochs,                      # sweep 不要 early stop，才公平
+        close_mosaic=cfg.get("close_mosaic", 20),
+        lr0=cfg.get("lr0", 0.01), lrf=cfg.get("lrf", 0.01),
+        cos_lr=cfg.get("cos_lr", False),
+        project=SWEEP_RUNS, name=name, exist_ok=True,
+        workers=2, plots=False, verbose=False, **aug)
+    train_s = time.time() - t0
+
+    # 每個 epoch 實際花多久，直接讀 Ultralytics 自己的 log
+    sec_ep, csv_path = None, os.path.join(SWEEP_RUNS, name, "results.csv")
+    if os.path.exists(csv_path):
+        t = [float(r["time"]) for r in csv.DictReader(open(csv_path))]
+        if len(t) > 1:
+            sec_ep = (t[-1] - t[0]) / (len(t) - 1)
+
+    best = os.path.join(SWEEP_RUNS, name, "weights", "best.pt")
+    r3, ms = sweep_score(best, cfg["imgsz"])
+    rec = {"name": name, "weights": cfg["weights"], "epochs": epochs,
+           "batch": cfg["batch"], "imgsz": cfg["imgsz"],
+           "close_mosaic": cfg.get("close_mosaic", 20),
+           "cos_lr": cfg.get("cos_lr", False), "aug": aug,
+           "map50": r3["map50"],
+           "per_class_ap50": {k: v["ap50"] for k, v in r3["per_class"].items()},
+           "per_class_full": r3["per_class"],
+           "train_seconds": train_s, "sec_per_epoch": sec_ep, "latency_ms": ms,
+           "peak_vram_mb": torch.cuda.max_memory_reserved() / 1e6,
+           "device": (torch.cuda.get_device_name(0)
+                      if torch.cuda.is_available() else "cpu")}
+
+    # 跑完一個就立刻存 Drive -> 斷線不會白跑
+    recs = [r for r in recs if r["name"] != name] + [rec]
+    json.dump(recs, open(SWEEP_JSON, "w", encoding="utf-8"), indent=1,
+              ensure_ascii=False)
+    shutil.copyfile(best, os.path.join(SWEEP_DIR, name + "_best.pt"))
+
+    print("[完成] %s  mAP@0.5 = %.4f  (%+.4f vs 繳交版)"
+          % (name, rec["map50"], rec["map50"] - SUBMITTED_MAP50))
+    print("       %.0f 分鐘, %.1f s/epoch, peak %.0f MB"
+          % (train_s / 60, sec_ep or 0, rec["peak_vram_mb"]))
+    print("       權重 -> %s" % os.path.join(SWEEP_DIR, name + "_best.pt"),
+          flush=True)
+
+print("\n==== sweep 結束，跑 6.7c 看比較表 ====")
+""")
+
+code(r"""
+# 6.7c 比較表 + 匯出（把最後那段 JSON 整個複製貼回對話）
+recs = load_recs()
+assert recs, "還沒有任何結果，先跑 6.7b"
+recs = sorted(recs, key=lambda r: -r["map50"])
+
+w = max([len(r["name"]) for r in recs] + [9])
+head = ("%-*s %4s %3s %4s | %7s %8s | " % (w, "run", "ep", "bs", "img",
+                                           "mAP@.5", "vs 繳交")
+        + " ".join("%-6s" % c[:6] for c in CLASS_ORDER)
+        + " | %5s %6s" % ("ms", "s/ep"))
+print(head)
+print("-" * len(head))
+for r in recs:
+    print("%-*s %4d %3d %4d | %7.4f %+8.4f | "
+          % (w, r["name"], r["epochs"], r["batch"], r["imgsz"], r["map50"],
+             r["map50"] - SUBMITTED_MAP50)
+          + " ".join("%-6.4f" % r["per_class_ap50"][c] for c in CLASS_ORDER)
+          + " | %5.1f %6.1f" % (r["latency_ms"], r["sec_per_epoch"] or 0))
+
+print()
+print("繳交版 YOLOv8s = %.4f（本機 GTX 1650 Ti, 100 ep, batch 8, imgsz 640）"
+      % SUBMITTED_MAP50)
+b = recs[0]
+print("最好的是 %s: mAP@0.5 %.4f (%+.4f)"
+      % (b["name"], b["map50"], b["map50"] - SUBMITTED_MAP50))
+print("權重在 %s" % os.path.join(SWEEP_DIR, b["name"] + "_best.pt"))
+
+# 進步最多 / 退步最多的類別，先自己看一眼
+base = {"crazing": 0.4559, "inclusion": 0.7809, "patches": 0.9277,
+        "pitted_surface": 0.8488, "rolled_in_scale": 0.5807,
+        "scratches": 0.8575}
+print("\n%s 相對繳交版的 per-class 變化:" % b["name"])
+for c in CLASS_ORDER:
+    d = b["per_class_ap50"][c] - base[c]
+    print("  %-16s %.4f -> %.4f  (%+.4f)%s"
+          % (c, base[c], b["per_class_ap50"][c], d, "  <<<" if abs(d) > 0.05 else ""))
+
+print("\n" + "=" * 68)
+print("把下面整段複製貼回對話給 Claude")
+print("=" * 68)
+print(json.dumps([{k: v for k, v in r.items()
+                   if k not in ("per_class_full", "aug")} for r in recs],
+                 ensure_ascii=False, indent=1))
+""")
+
 # ============================================================ 7. 存檔
 md(r"""
 ---
